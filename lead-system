@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Infrastructure System - Never Lose a Lead Again</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #fafafa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            color: #fff;
+            padding: 120px 24px 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1" fill="%23ffffff" opacity="0.05"/></svg>');
+            background-size: 40px 40px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            margin-bottom: 24px;
+            line-height: 1.1;
+        }
+
+        .hero .subheadline {
+            font-size: 22px;
+            color: #d4d4d4;
+            margin-bottom: 48px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        .cta-primary {
+            display: inline-block;
+            background: #fff;
+            color: #1a1a1a;
+            padding: 18px 48px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            border: 2px solid #fff;
+            margin: 0 12px 16px;
+        }
+
+        .cta-primary:hover {
+            background: transparent;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255,255,255,0.15);
+        }
+
+        .cta-secondary {
+            display: inline-block;
+            background: transparent;
+            color: #fff;
+            padding: 18px 48px;
+            font-size: 18px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 6px;
+            border: 2px solid #fff;
+            transition: all 0.3s ease;
+            margin: 0 12px 16px;
+        }
+
+        .cta-secondary:hover {
+            background: #fff;
+            color: #1a1a1a;
+            transform: translateY(-2px);
+        }
+
+        .whatsapp-badge {
+            margin-top: 32px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.1);
+            padding: 12px 24px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .whatsapp-badge svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 100px 24px;
+        }
+
+        .section-title {
+            font-size: 42px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 64px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Problem Section */
+        .problem {
+            background: #fff;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .problem-item {
+            padding: 32px;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .problem-item:hover {
+            border-color: #1a1a1a;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        .problem-icon {
+            width: 48px;
+            height: 48px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 24px;
+        }
+
+        .problem-item h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .problem-item p {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Workflow Section */
+        .workflow {
+            background: #f5f5f5;
+        }
+
+        .workflow-visual {
+            max-width: 1000px;
+            margin: 0 auto 48px;
+            background: #fff;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+        }
+
+        .workflow-visual img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid #e5e5e5;
+        }
+
+        .workflow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .workflow-step {
+            background: #fff;
+            padding: 24px;
+            border-radius: 8px;
+            border-left: 3px solid #1a1a1a;
+        }
+
+        .workflow-step .step-number {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: #1a1a1a;
+            color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .workflow-step h4 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .workflow-step p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            background: #fff;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .benefit-item {
+            display: flex;
+            gap: 20px;
+        }
+
+        .benefit-icon {
+            flex-shrink: 0;
+            width: 56px;
+            height: 56px;
+            background: #1a1a1a;
+            color: #fff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .benefit-content h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .benefit-content p {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+            color: #fff;
+        }
+
+        .pricing-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 64px 48px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .price {
+            font-size: 72px;
+            font-weight: 700;
+            margin: 24px 0;
+            letter-spacing: -2px;
+        }
+
+        .price-label {
+            font-size: 18px;
+            color: #d4d4d4;
+            margin-bottom: 32px;
+        }
+
+        .pricing-features {
+            text-align: left;
+            margin: 32px 0;
+        }
+
+        .pricing-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .checkmark {
+            color: #4ade80;
+            font-weight: 700;
+        }
+
+        /* Guarantee Section */
+        .guarantee {
+            background: #f5f5f5;
+            text-align: center;
+        }
+
+        .guarantee-box {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 48px;
+            border-radius: 12px;
+            border: 2px solid #1a1a1a;
+        }
+
+        .guarantee-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+        }
+
+        .guarantee-box h3 {
+            font-size: 28px;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .guarantee-box p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 64px 24px 32px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-contacts {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .footer-contact {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #d4d4d4;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-contact:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero .subheadline {
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .price {
+                font-size: 56px;
+            }
+
+            .cta-primary, .cta-secondary {
+                display: block;
+                margin: 12px auto;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Stop Losing Leads You'll Never Know About</h1>
+            <p class="subheadline">A bulletproof lead infrastructure that captures, validates, routes, and monitors every single lead—with instant alerts, full audit logs, and complete documentation.</p>
+            <div>
+                <a href="#pricing" class="cta-primary">Get It Now - $1,497</a>
+                <a href="#workflow" class="cta-secondary">See How It Works</a>
+            </div>
+            <div class="whatsapp-badge">
+                <svg fill="#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <span>24/7 WhatsApp Support</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem">
+        <div class="container">
+            <h2 class="section-title">The Hidden Cost of Lead Failures</h2>
+            <p class="section-subtitle">Every day, businesses lose revenue from leads that slip through the cracks—and they never even know it happened.</p>
+            <div class="problem-grid">
+                <div class="problem-item">
+                    <div class="problem-icon">⚠️</div>
+                    <h3>Silent Failures</h3>
+                    <p>Forms submit successfully on the frontend, but leads vanish before reaching your CRM. No error. No alert. Just lost revenue.</p>
+                </div>
+                <div class="problem-item">
+                    <div class="problem-icon">🕳️</div>
+                    <h3>Integration Blind Spots</h3>
+                    <p>API timeouts, validation errors, or third-party service failures cause leads to disappear without any trace or notification.</p>
+                </div>
+                <div class="problem-item">
+                    <div class="problem-icon">❌</div>
+                    <h3>No Recovery System</h3>
+                    <p>When failures occur, there's no retry logic, no backup routing, and no way to recover lost opportunities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section class="workflow" id="workflow">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">A complete lead infrastructure that ensures zero data loss and full visibility</p>
+            
+            <div class="workflow-visual">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='400'%3E%3Crect width='800' height='400' fill='%23f9fafb'/%3E%3Ctext x='400' y='200' font-family='Arial' font-size='18' fill='%23666' text-anchor='middle'%3EWorkflow Diagram Placeholder%3C/text%3E%3Ctext x='400' y='230' font-family='Arial' font-size='14' fill='%23999' text-anchor='middle'%3E(Upload your workflow screenshot to replace this)%3C/text%3E%3C/svg%3E" alt="Lead Infrastructure Workflow">
+            </div>
+
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <span class="step-number">1</span>
+                    <h4>Lead Ingestion</h4>
+                    <p>Every lead enters through a secure endpoint with automatic timestamp and source tracking.</p>
+                </div>
+                <div class="workflow-step">
+                    <step-number">2</span>
+                    <h4>Validation & Enrichment</h4>
+                    <p>Data is validated, cleaned, and enriched before processing—ensuring quality from the start.</p>
+                </div>
+                <div class="workflow-step">
+                    <span class="step-number">3</span>
+                    <h4>Smart Routing</h4>
+                    <p>Leads are intelligently routed to your CRM, email systems, or custom endpoints based on your rules.</p>
+                </div>
+                <div class="workflow-step">
+                    <span class="step-number">4</span>
+                    <h4>Real-Time Monitoring</h4>
+                    <p>Every lead is tracked with full audit logs, status updates, and instant failure alerts via email and WhatsApp.</p>
+                </div>
+                <div class="workflow-step">
+                    <span class="step-number">5</span>
+                    <h4>Automatic Retry Logic</h4>
+                    <p>Failed deliveries are automatically retried with exponential backoff—no lead left behind.</p>
+                </div>
+                <div class="workflow-step">
+                    <span class="step-number">6</span>
+                    <h4>Complete Audit Trail</h4>
+                    <p>Full searchable history of every lead, every attempt, and every status change—forever accessible.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="container">
+            <h2 class="section-title">Why Decision-Makers Choose This System</h2>
+            <p class="section-subtitle">Built for reliability, transparency, and ROI</p>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">🛡️</div>
+                    <div class="benefit-content">
+                        <h3>Zero Lead Loss</h3>
+                        <p>Bulletproof architecture with retry logic, fallback routing, and automatic recovery ensures every lead is captured and delivered.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">⚡</div>
+                    <div class="benefit-content">
+                        <h3>Instant Alerts</h3>
+                        <p>Get notified immediately via email and WhatsApp when any failure occurs—respond before opportunities are lost.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📊</div>
+                    <div class="benefit-content">
+                        <h3>Complete Visibility</h3>
+                        <p>Full audit logs and searchable history give you total transparency into every lead's journey through your system.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔧</div>
+                    <div class="benefit-content">
+                        <h3>Full Control</h3>
+                        <p>Deploy on your infrastructure with complete source code, documentation, and customization freedom. No vendor lock-in.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📚</div>
+                    <div class="benefit-content">
+                        <h3>Complete Documentation</h3>
+                        <p>Comprehensive setup guides, API documentation, and integration examples get you running in hours, not weeks.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">💬</div>
+                    <div class="benefit-content">
+                        <h3>48-Hour Support</h3>
+                        <p>Direct WhatsApp and email support with guaranteed response within 48 hours for any technical questions or issues.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="section-title">One-Time Investment, Lifetime Value</h2>
+            <p class="section-subtitle">No monthly fees. No recurring charges. Own it forever.</p>
+            <div class="pricing-card">
+                <div class="price">$1,497</div>
+                <p class="price-label">One-time payment • Full ownership • Complete source code</p>
+                <ul class="pricing-features">
+                    <li><span class="checkmark">✓</span> Complete Lead Infrastructure System</li>
+                    <li><span class="checkmark">✓</span> Full source code and documentation</li>
+                    <li><span class="checkmark">✓</span> Unlimited leads, unlimited usage</li>
+                    <li><span class="checkmark">✓</span> Real-time monitoring and alerts</li>
+                    <li><span class="checkmark">✓</span> Automatic retry and recovery logic</li>
+                    <li><span class="checkmark">✓</span> Complete audit logs and reporting</li>
+                    <li><span class="checkmark">✓</span> 48-hour WhatsApp/email support</li>
+                    <li><span class="checkmark">✓</span> Free updates for 12 months</li>
+                    <li><span class="checkmark">✓</span> 48-hour money-back guarantee</li>
+                </ul>
+                <a href="#" class="cta-primary" style="margin-top: 32px;">Get Instant Access Now</a>
+                <p style="margin-top: 24px; font-size: 14px; color: #d4d4d4;">One lost $50,000 deal pays for this system 33 times over.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guarantee Section -->
+    <section class="guarantee">
+        <div class="container">
+            <div class="guarantee-box">
+                <div class="guarantee-icon">🛡️</div>
+                <h3>48-Hour Money-Back Guarantee</h3>
+                <p>If the system doesn't work as described, or you're not completely satisfied with the documentation and functionality within 48 hours of purchase, we'll refund your investment immediately—no questions asked. We stand behind the quality and reliability of this system.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-contacts">
+                <a href="https://wa.me/1234567890" class="footer-contact">
+                    <svg width="24" height="24" fill="#25D366" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    <span>WhatsApp: +1 (234) 567-8900</span>
+                </a>
+                <a href="mailto:support@leadinfra.com" class="footer-contact">
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <span>support@leadinfra.com</span>
+                </a>
+            </div>
+            <div class="copyright">
+                &copy; 2026 Lead Infrastructure System. All rights reserved.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
