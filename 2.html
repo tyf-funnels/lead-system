@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Forma. — Private Architecture & Interior Design Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;0,6..96,900;1,6..96,400;1,6..96,700&family=Syne:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --obsidian: #0d0c0b;
+    --obsidian-2: #141310;
+    --obsidian-3: #1c1a17;
+    --bone: #e8e0d4;
+    --bone-2: #d4c9b8;
+    --bone-3: #bfb09a;
+    --copper: #c9956a;
+    --copper-2: #b07a50;
+    --copper-pale: rgba(201,149,106,0.12);
+    --copper-border: rgba(201,149,106,0.22);
+    --border: rgba(232,224,212,0.08);
+    --border-mid: rgba(232,224,212,0.14);
+    --muted: rgba(232,224,212,0.38);
+    --r: 0px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--obsidian);
+    color: var(--bone);
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    cursor: none;
+  }
+
+  /* ─── CUSTOM CURSOR ─── */
+  .cursor {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--copper);
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s ease, width 0.25s ease, height 0.25s ease, background 0.25s ease;
+    mix-blend-mode: normal;
+  }
+
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,149,106,0.4);
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, width 0.25s ease, height 0.25s ease, opacity 0.25s ease;
+  }
+
+  body:hover .cursor { opacity: 1; }
+
+  /* ─── GRAIN ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 99997;
+    opacity: 0.55;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    height: 80px;
+    background: rgba(13,12,11,0.88);
+    backdrop-filter: blur(28px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 1.55rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: var(--bone);
+    text-decoration: none;
+    display: flex;
+    align-items: baseline;
+    gap: 1px;
+  }
+
+  .nav-logo span {
+    color: var(--copper);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    transition: color 0.25s;
+  }
+
+  .nav-links a:hover { color: var(--bone); }
+
+  .nav-cta { display: flex; align-items: center; gap: 12px; }
+
+  .btn-nav-ghost {
+    background: none;
+    border: 1px solid var(--border-mid);
+    color: var(--bone);
+    padding: 9px 22px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    transition: all 0.25s;
+    text-decoration: none;
+  }
+
+  .btn-nav-ghost:hover { border-color: var(--copper); color: var(--copper); }
+
+  .btn-nav-primary {
+    background: var(--copper);
+    color: var(--obsidian);
+    border: none;
+    padding: 10px 24px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-nav-primary:hover {
+    background: var(--bone);
+    transform: translateY(-1px);
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Left panel */
+  .hero-left {
+    padding: 160px 6% 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    border-right: 1px solid var(--border);
+  }
+
+  /* Copper vertical rule accent */
+  .hero-left::before {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 0;
+    width: 2px;
+    height: 30%;
+    background: linear-gradient(to bottom, transparent, var(--copper), transparent);
+  }
+
+  .hero-overline {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 36px;
+    animation: slideIn 0.8s ease both;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .overline-rule { width: 36px; height: 1px; background: var(--copper); flex-shrink: 0; }
+  .overline-text {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--copper);
+  }
+
+  .hero-headline {
+    font-family: 'Bodoni Moda', serif;
+    font-size: clamp(3.2rem, 5.5vw, 5.8rem);
+    font-weight: 900;
+    line-height: 0.97;
+    letter-spacing: -1.5px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.9s 0.15s ease both;
+  }
+
+  .hero-headline em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--copper);
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: 0.975rem;
+    color: var(--muted);
+    max-width: 400px;
+    line-height: 1.85;
+    margin-bottom: 48px;
+    animation: fadeUp 0.9s 0.25s ease both;
+    font-weight: 400;
+  }
+
+  .hero-sub strong { color: var(--bone-2); font-weight: 500; }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 64px;
+    animation: fadeUp 0.9s 0.35s ease both;
+  }
+
+  .btn-hero-primary {
+    background: var(--copper);
+    color: var(--obsidian);
+    border: none;
+    padding: 18px 40px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    transition: all 0.28s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn-hero-primary:hover {
+    background: var(--bone);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 48px rgba(201,149,106,0.25);
+  }
+
+  .btn-hero-outline {
+    background: none;
+    border: 1px solid var(--border-mid);
+    color: var(--bone-2);
+    padding: 18px 36px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    transition: all 0.25s;
+    text-decoration: none;
+  }
+
+  .btn-hero-outline:hover { border-color: var(--copper); color: var(--copper); }
+
+  /* Distinction markers */
+  .hero-markers {
+    display: flex;
+    gap: 36px;
+    animation: fadeUp 0.9s 0.45s ease both;
+  }
+
+  .marker {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .marker-val {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--bone);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+
+  .marker-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+  }
+
+  .marker-sep {
+    width: 1px;
+    background: var(--border-mid);
+    align-self: stretch;
+    margin: 4px 0;
+  }
+
+  /* ─── HERO RIGHT — FLOORPLAN VISUAL ─── */
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--obsidian-2);
+    animation: fadeUp 1.1s 0.1s ease both;
+  }
+
+  /* Grid overlay */
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,224,212,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,224,212,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .hero-right::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(201,149,106,0.06) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .floorplan-wrap {
+    position: relative;
+    z-index: 2;
+    width: 85%;
+    max-width: 460px;
+  }
+
+  .floorplan-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--copper);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .floorplan-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--copper-border);
+  }
+
+  /* SVG floorplan */
+  .floorplan svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Draw-on animation */
+  .draw-path {
+    stroke-dasharray: 1200;
+    stroke-dashoffset: 1200;
+    animation: draw 2.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .draw-path-2 {
+    stroke-dasharray: 800;
+    stroke-dashoffset: 800;
+    animation: draw 2.4s 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .draw-path-3 {
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: draw 2s 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  .draw-path-4 {
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: draw 1.8s 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .fade-in-svg {
+    opacity: 0;
+    animation: svgFade 0.6s ease forwards;
+  }
+
+  @keyframes svgFade {
+    to { opacity: 1; }
+  }
+
+  .floorplan-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .floorplan-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .fm-label { font-size: 0.58rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .fm-val { font-size: 0.82rem; font-weight: 600; color: var(--bone-2); }
+
+  /* Float details */
+  .float-detail {
+    position: absolute;
+    background: rgba(13,12,11,0.92);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-mid);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    animation: floatSway 5s ease-in-out infinite;
+  }
+
+  .float-detail-1 { bottom: 60px; left: 20px; animation-delay: 0s; }
+  .float-detail-2 { top: 80px; right: 20px; animation-delay: 2.5s; }
+
+  @keyframes floatSway {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-7px); }
+  }
+
+  .fd-icon {
+    width: 32px; height: 32px;
+    background: var(--copper-pale);
+    border: 1px solid var(--copper-border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .fd-label { font-size: 0.58rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+  .fd-val { font-size: 0.82rem; font-weight: 600; color: var(--bone); }
+
+  /* ─── AWARDS STRIP ─── */
+  .awards {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 5%;
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    flex-wrap: wrap;
+  }
+
+  .awards-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .awards-sep { width: 1px; height: 18px; background: var(--border-mid); flex-shrink: 0; }
+
+  .awards-list {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    flex-wrap: wrap;
+  }
+
+  .award-item {
+    font-family: 'Bodoni Moda', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(232,224,212,0.2);
+    transition: color 0.3s;
+    cursor: default;
+  }
+
+  .award-item:hover { color: rgba(232,224,212,0.5); }
+
+  /* ─── SECTIONS ─── */
+  .section { padding: 120px 5%; }
+
+  .section-overline {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .section-overline-rule { width: 28px; height: 1px; background: var(--copper); }
+  .section-overline-text {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--copper);
+  }
+
+  .section-headline {
+    font-family: 'Bodoni Moda', serif;
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    font-weight: 700;
+    line-height: 1.03;
+    letter-spacing: -0.5px;
+    margin-bottom: 20px;
+    color: var(--bone);
+  }
+
+  .section-headline em { font-style: italic; font-weight: 400; color: var(--copper); }
+
+  .section-sub {
+    font-size: 0.975rem;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.85;
+  }
+
+  /* ─── SERVICES ─── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 70px;
+    border: 1px solid var(--border);
+  }
+
+  .service-card {
+    padding: 48px 40px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.35s;
+  }
+
+  .service-card:nth-child(3n) { border-right: none; }
+  .service-card:nth-child(n+4) { border-bottom: none; }
+  .service-card:hover { background: var(--obsidian-2); }
+
+  /* Copper corner accent on hover */
+  .service-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--copper);
+    transition: width 0.4s ease;
+  }
+
+  .service-card:hover::after { width: 100%; }
+
+  .service-num {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    font-style: italic;
+    color: rgba(232,224,212,0.05);
+    line-height: 1;
+    margin-bottom: 20px;
+    letter-spacing: -2px;
+  }
+
+  .service-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--bone);
+    letter-spacing: 0.2px;
+  }
+
+  .service-desc {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  /* ─── PROCESS — DARK INSET ─── */
+  .process-section {
+    background: var(--obsidian-2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .process-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: start;
+    margin-top: 80px;
+  }
+
+  .steps { display: flex; flex-direction: column; gap: 0; }
+
+  .step {
+    display: flex;
+    gap: 28px;
+    padding: 36px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+
+  .step:last-child { border-bottom: none; }
+
+  .step-num {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    font-style: italic;
+    color: rgba(232,224,212,0.1);
+    line-height: 1;
+    width: 48px;
+    flex-shrink: 0;
+    transition: color 0.3s;
+  }
+
+  .step.active .step-num,
+  .step:hover .step-num { color: var(--copper); }
+
+  .step-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: rgba(232,224,212,0.8);
+    letter-spacing: 0.2px;
+  }
+
+  .step.active .step-title { color: var(--bone); }
+
+  .step-desc {
+    font-size: 0.875rem;
+    color: rgba(232,224,212,0.3);
+    line-height: 1.7;
+    transition: color 0.3s;
+  }
+
+  .step.active .step-desc,
+  .step:hover .step-desc { color: var(--muted); }
+
+  /* Process visual — mood board card */
+  .process-visual {
+    position: sticky;
+    top: 110px;
+    border: 1px solid var(--border-mid);
+    overflow: hidden;
+  }
+
+  .pv-header {
+    background: var(--obsidian-3);
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .pv-title {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .pv-phase {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--copper);
+    background: var(--copper-pale);
+    border: 1px solid var(--copper-border);
+    padding: 3px 12px;
+  }
+
+  .pv-body { padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+
+  .project-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    background: var(--obsidian);
+    border: 1px solid var(--border);
+    transition: border-color 0.3s;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .project-row:nth-child(2) { animation-delay: 0.12s; }
+  .project-row:nth-child(3) { animation-delay: 0.24s; }
+  .project-row:hover { border-color: var(--copper-border); }
+
+  .pr-swatch {
+    width: 42px; height: 42px;
+    flex-shrink: 0;
+  }
+
+  .pr-s1 { background: linear-gradient(135deg, #3d3028, #1c1510); }
+  .pr-s2 { background: linear-gradient(135deg, #1e2832, #0e1620); }
+  .pr-s3 { background: linear-gradient(135deg, #28321e, #141c0e); }
+
+  .pr-info { flex: 1; }
+  .pr-name { font-size: 0.875rem; font-weight: 600; color: var(--bone-2); margin-bottom: 3px; }
+  .pr-type { font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; }
+
+  .pr-status {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+
+  .pr-status.concept { color: var(--copper); border-color: var(--copper-border); background: var(--copper-pale); }
+  .pr-status.design { color: #7eb8c9; border-color: rgba(126,184,201,0.22); background: rgba(126,184,201,0.08); }
+  .pr-status.build { color: #8eb87e; border-color: rgba(142,184,126,0.22); background: rgba(142,184,126,0.08); }
+
+  .pv-quote {
+    background: var(--obsidian);
+    border: 1px solid var(--copper-border);
+    border-left: 3px solid var(--copper);
+    padding: 18px 20px;
+    margin-top: 4px;
+  }
+
+  .pv-quote-text {
+    font-family: 'Bodoni Moda', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--bone-2);
+    line-height: 1.65;
+  }
+
+  .pv-quote-attr { font-size: 0.65rem; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 10px; }
+
+  /* ─── STATS ─── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--border);
+  }
+
+  .stat-cell {
+    padding: 52px 40px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .stat-cell:last-child { border-right: none; }
+  .stat-cell:hover { background: var(--obsidian-2); }
+
+  .stat-cell::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--copper), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+
+  .stat-cell:hover::before { transform: scaleX(1); }
+
+  .stat-num {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 3.8rem;
+    font-weight: 900;
+    letter-spacing: -2px;
+    color: var(--bone);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .stat-label { font-size: 0.72rem; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; }
+
+  /* ─── TESTIMONIALS ─── */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin-top: 70px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .testimonial {
+    background: var(--obsidian);
+    padding: 44px 40px;
+    transition: background 0.3s;
+    position: relative;
+  }
+
+  .testimonial:hover { background: var(--obsidian-2); }
+
+  .t-mark {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    font-style: italic;
+    line-height: 0.8;
+    color: var(--copper);
+    opacity: 0.35;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .t-quote {
+    font-family: 'Bodoni Moda', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--bone-2);
+    margin-bottom: 32px;
+  }
+
+  .t-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border-mid);
+  }
+
+  .t-avatar {
+    width: 42px; height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--obsidian);
+  }
+
+  .ta1 { background: var(--copper); }
+  .ta2 { background: var(--bone-3); }
+  .ta3 { background: #7eb8c9; }
+
+  .t-name { font-size: 0.875rem; font-weight: 600; color: var(--bone); }
+  .t-role { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.5px; }
+
+  /* ─── PRICING ─── */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin-top: 70px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    align-items: start;
+  }
+
+  .pricing-card {
+    background: var(--obsidian);
+    padding: 48px 40px;
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .pricing-card:hover { background: var(--obsidian-2); }
+
+  .pricing-card.featured {
+    background: var(--obsidian-2);
+    border-top: 2px solid var(--copper);
+  }
+
+  .pricing-badge {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--copper);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .plan-tier {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .plan-price {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 3.6rem;
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1;
+    color: var(--bone);
+    margin-bottom: 4px;
+  }
+
+  .plan-period { font-size: 0.78rem; color: var(--muted); margin-bottom: 36px; }
+
+  .plan-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 40px;
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+  }
+
+  .plan-feature {
+    font-size: 0.875rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .plan-feature::before {
+    content: '—';
+    color: var(--copper);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .plan-feature.active { color: var(--bone-2); }
+
+  .plan-feature.inactive { color: rgba(232,224,212,0.18); }
+  .plan-feature.inactive::before { color: rgba(232,224,212,0.12); content: '·'; }
+
+  .btn-plan {
+    width: 100%;
+    padding: 16px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+    cursor: pointer;
+    border: 1px solid var(--border-mid);
+    background: none;
+    color: var(--bone-2);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    transition: all 0.25s;
+  }
+
+  .btn-plan:hover { border-color: var(--copper); color: var(--copper); }
+
+  .btn-plan.featured {
+    background: var(--copper);
+    border-color: var(--copper);
+    color: var(--obsidian);
+  }
+
+  .btn-plan.featured:hover { background: var(--bone); border-color: var(--bone); }
+
+  /* ─── CTA ─── */
+  .cta-section {
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 140px 5%;
+  }
+
+  /* Copper radial glow */
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px; height: 500px;
+    background: radial-gradient(ellipse, rgba(201,149,106,0.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  /* Geometric corner ornaments */
+  .cta-ornament {
+    position: absolute;
+    width: 80px; height: 80px;
+    border-color: var(--copper-border);
+    border-style: solid;
+    border-width: 0;
+    opacity: 0.7;
+  }
+
+  .cta-ornament-tl { top: 40px; left: 5%; border-top-width: 1px; border-left-width: 1px; }
+  .cta-ornament-tr { top: 40px; right: 5%; border-top-width: 1px; border-right-width: 1px; }
+  .cta-ornament-bl { bottom: 40px; left: 5%; border-bottom-width: 1px; border-left-width: 1px; }
+  .cta-ornament-br { bottom: 40px; right: 5%; border-bottom-width: 1px; border-right-width: 1px; }
+
+  .cta-section .section-headline {
+    font-size: clamp(3rem, 5vw, 5rem);
+    max-width: 700px;
+    margin: 0 auto 20px;
+  }
+
+  .cta-section .section-sub { margin: 0 auto 52px; text-align: center; max-width: 420px; }
+
+  .cta-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+
+  .cta-fine {
+    font-size: 0.72rem;
+    color: rgba(232,224,212,0.25);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 52px 5%;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .footer-logo {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: rgba(232,224,212,0.7);
+    letter-spacing: 0.5px;
+  }
+
+  .footer-logo span { color: var(--copper); font-style: italic; font-weight: 400; }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+    justify-content: center;
+  }
+
+  .footer-links a {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(232,224,212,0.3);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: rgba(232,224,212,0.7); }
+
+  .footer-copy {
+    font-size: 0.7rem;
+    color: rgba(232,224,212,0.2);
+    text-align: right;
+    letter-spacing: 0.5px;
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.85s ease, transform 0.85s ease;
+  }
+
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 960px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 120px 5% 80px; border-right: none; border-bottom: 1px solid var(--border); }
+    .hero-right { height: 440px; }
+    .hero-right::before { display: block; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .process-grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    footer { grid-template-columns: 1fr; text-align: center; }
+    .footer-copy { text-align: center; }
+    .cta-ornament { display: none; }
+    .float-detail { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Forma<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="#" class="btn-nav-ghost">View Portfolio</a>
+    <a href="#" class="btn-nav-primary">
+      <span>Start a Project</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-overline">
+      <div class="overline-rule"></div>
+      <div class="overline-text">Private Architecture Studio — Est. 2009</div>
+    </div>
+
+    <h1 class="hero-headline">
+      Spaces that
+      <em>define you.</em>
+    </h1>
+
+    <p class="hero-sub">
+      Forma is an invitation-based design studio working with <strong>visionary clients</strong> to create architecture and interiors of lasting significance. Every project begins with a conversation.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#" class="btn-hero-primary">
+        Begin Your Brief
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#process" class="btn-hero-outline">Our Process</a>
+    </div>
+
+    <div class="hero-markers">
+      <div class="marker">
+        <div class="marker-val">140+</div>
+        <div class="marker-label">Projects Completed</div>
+      </div>
+      <div class="marker-sep"></div>
+      <div class="marker">
+        <div class="marker-val">26</div>
+        <div class="marker-label">Countries</div>
+      </div>
+      <div class="marker-sep"></div>
+      <div class="marker">
+        <div class="marker-val">11</div>
+        <div class="marker-label">International Awards</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="floorplan-wrap">
+      <div class="floorplan-label">Active Design — Residence No. 07</div>
+
+      <div class="floorplan">
+        <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+          <!-- Main structure outline -->
+          <rect x="20" y="20" width="360" height="280" fill="none"
+            stroke="rgba(201,149,106,0.5)" stroke-width="1.5"
+            class="draw-path" />
+
+          <!-- Interior walls -->
+          <polyline points="20,140 200,140" fill="none"
+            stroke="rgba(232,224,212,0.25)" stroke-width="1"
+            class="draw-path-2" />
+          <polyline points="200,20 200,200" fill="none"
+            stroke="rgba(232,224,212,0.25)" stroke-width="1"
+            class="draw-path-2" />
+          <polyline points="200,200 380,200" fill="none"
+            stroke="rgba(232,224,212,0.25)" stroke-width="1"
+            class="draw-path-2" />
+          <polyline points="290,140 290,20" fill="none"
+            stroke="rgba(232,224,212,0.25)" stroke-width="1"
+            class="draw-path-2" />
+
+          <!-- Door arcs -->
+          <path d="M 200 140 A 30 30 0 0 1 170 140" fill="none"
+            stroke="rgba(201,149,106,0.4)" stroke-width="0.8"
+            class="draw-path-3" />
+          <path d="M 200 200 A 25 25 0 0 0 200 175" fill="none"
+            stroke="rgba(201,149,106,0.4)" stroke-width="0.8"
+            class="draw-path-3" />
+
+          <!-- Window markers -->
+          <line x1="80" y1="20" x2="140" y2="20"
+            stroke="rgba(201,149,106,0.7)" stroke-width="2"
+            class="draw-path-4" />
+          <line x1="230" y1="20" x2="270" y2="20"
+            stroke="rgba(201,149,106,0.7)" stroke-width="2"
+            class="draw-path-4" />
+          <line x1="310" y1="20" x2="360" y2="20"
+            stroke="rgba(201,149,106,0.7)" stroke-width="2"
+            class="draw-path-4" />
+          <line x1="380" y1="60" x2="380" y2="120"
+            stroke="rgba(201,149,106,0.7)" stroke-width="2"
+            class="draw-path-4" />
+          <line x1="380" y1="220" x2="380" y2="280"
+            stroke="rgba(201,149,106,0.7)" stroke-width="2"
+            class="draw-path-4" />
+
+          <!-- Room labels -->
+          <text x="96" y="88" fill="rgba(232,224,212,0.25)" font-size="8"
+            font-family="Syne, sans-serif" letter-spacing="2"
+            class="fade-in-svg" style="animation-delay:2.4s">LIVING</text>
+          <text x="282" y="80" fill="rgba(232,224,212,0.25)" font-size="8"
+            font-family="Syne, sans-serif" letter-spacing="2"
+            class="fade-in-svg" style="animation-delay:2.6s">STUDY</text>
+          <text x="85" y="195" fill="rgba(232,224,212,0.25)" font-size="8"
+            font-family="Syne, sans-serif" letter-spacing="2"
+            class="fade-in-svg" style="animation-delay:2.8s">DINING</text>
+          <text x="268" y="255" fill="rgba(232,224,212,0.25)" font-size="8"
+            font-family="Syne, sans-serif" letter-spacing="2"
+            class="fade-in-svg" style="animation-delay:3s">SUITE</text>
+
+          <!-- Copper accent dot — compass marker -->
+          <circle cx="380" cy="300" r="3" fill="var(--copper)"
+            class="fade-in-svg" style="animation-delay:2.8s" />
+          <text x="366" y="315" fill="rgba(201,149,106,0.6)" font-size="6"
+            font-family="Syne, sans-serif" letter-spacing="2"
+            class="fade-in-svg" style="animation-delay:3s">N</text>
+          <line x1="380" y1="308" x2="380" y2="316"
+            stroke="rgba(201,149,106,0.5)" stroke-width="0.8"
+            class="fade-in-svg" style="animation-delay:3s" />
+
+          <!-- Scale bar -->
+          <line x1="20" y1="308" x2="80" y2="308"
+            stroke="rgba(232,224,212,0.2)" stroke-width="0.8"
+            class="fade-in-svg" style="animation-delay:2.8s" />
+          <text x="26" y="316" fill="rgba(232,224,212,0.2)" font-size="5"
+            font-family="Syne, sans-serif" letter-spacing="1.5"
+            class="fade-in-svg" style="animation-delay:3s">0    5    10m</text>
+        </svg>
+      </div>
+
+      <div class="floorplan-meta">
+        <div class="floorplan-meta-item">
+          <div class="fm-label">GFA</div>
+          <div class="fm-val">4,200 m²</div>
+        </div>
+        <div class="floorplan-meta-item">
+          <div class="fm-label">Phase</div>
+          <div class="fm-val">Schematic Design</div>
+        </div>
+        <div class="floorplan-meta-item">
+          <div class="fm-label">Location</div>
+          <div class="fm-val">Geneva, CH</div>
+        </div>
+        <div class="floorplan-meta-item">
+          <div class="fm-label">Lead Architect</div>
+          <div class="fm-val">E. Marchetti</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="float-detail float-detail-1">
+      <div class="fd-icon">◇</div>
+      <div>
+        <div class="fd-label">Design revision</div>
+        <div class="fd-val">Iteration 4 — Approved</div>
+      </div>
+    </div>
+
+    <div class="float-detail float-detail-2">
+      <div class="fd-icon">○</div>
+      <div>
+        <div class="fd-label">Active briefs</div>
+        <div class="fd-val">12 projects in progress</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AWARDS STRIP -->
+<div class="awards reveal">
+  <span class="awards-label">Recognition</span>
+  <div class="awards-sep"></div>
+  <div class="awards-list">
+    <span class="award-item">Architizer A+ Award</span>
+    <span class="award-item">Wallpaper* Design Award</span>
+    <span class="award-item">Dezeen Award — Residential</span>
+    <span class="award-item">RIBA International</span>
+    <span class="award-item">AD100 Studio</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="reveal">
+    <div class="section-overline">
+      <div class="section-overline-rule"></div>
+      <div class="section-overline-text">What We Do</div>
+    </div>
+    <h2 class="section-headline">Craft at every<br><em>scale.</em></h2>
+    <p class="section-sub">From a single room to an entire estate — Forma's disciplines span architecture, interiors, landscape, and bespoke furniture design.</p>
+  </div>
+
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-num">I</div>
+      <h3 class="service-title">Residential Architecture</h3>
+      <p class="service-desc">New builds, extensions, and full restorations for private residences of distinction. We work at every scale, from the intimate to the monumental.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">II</div>
+      <h3 class="service-title">Interior Architecture</h3>
+      <p class="service-desc">Complete interior architecture and spatial design — materials, light, proportion, and the precise choreography of how a room is lived in.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">III</div>
+      <h3 class="service-title">Commercial & Hospitality</h3>
+      <p class="service-desc">Flagship retail, private members' clubs, boutique hotels, and executive spaces. Environments that articulate a brand without stating it.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">IV</div>
+      <h3 class="service-title">Landscape Design</h3>
+      <p class="service-desc">The space between walls matters as much as the space within them. Forma's landscape practice extends architecture into terrain and season.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">V</div>
+      <h3 class="service-title">Bespoke Furniture & Objects</h3>
+      <p class="service-desc">One-of-a-kind pieces designed and fabricated in collaboration with master craftspeople. Every object carries the geometry of the space it was made for.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">VI</div>
+      <h3 class="service-title">Project Management</h3>
+      <p class="service-desc">Full owner's representation from brief to handover. We act as your single point of accountability across every contractor, consultant, and timeline.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section section" id="process">
+  <div class="reveal">
+    <div class="section-overline">
+      <div class="section-overline-rule"></div>
+      <div class="section-overline-text">Our Method</div>
+    </div>
+    <h2 class="section-headline">A process as considered<br>as the <em>result.</em></h2>
+  </div>
+
+  <div class="process-grid">
+    <div class="steps reveal">
+      <div class="step active">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h3 class="step-title">The Briefing</h3>
+          <p class="step-desc">We begin with deep listening — your life, your aesthetic instincts, the way you move through space. No forms, no questionnaires. A conversation.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h3 class="step-title">Concept Development</h3>
+          <p class="step-desc">From the brief we build a spatial narrative — a vision that guides every decision to come. Materials, light, proportion, sequence.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h3 class="step-title">Design Development</h3>
+          <p class="step-desc">The concept is refined into precise technical drawings, material specifications, and a construction-ready set of documents your builders can trust.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h3 class="step-title">Build & Handover</h3>
+          <p class="step-desc">We stay on site. Forma manages construction to the same standard we hold our drawings — obsessive, uncompromising, and entirely accountable.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="process-visual reveal">
+      <div class="pv-header">
+        <div class="pv-title">Current Projects</div>
+        <div class="pv-phase">Live — 12 Active</div>
+      </div>
+      <div class="pv-body">
+        <div class="project-row">
+          <div class="pr-swatch pr-s1"></div>
+          <div class="pr-info">
+            <div class="pr-name">Villa Marchetti — Geneva</div>
+            <div class="pr-type">Residential · 4,200 m²</div>
+          </div>
+          <div class="pr-status concept">Concept</div>
+        </div>
+        <div class="project-row">
+          <div class="pr-swatch pr-s2"></div>
+          <div class="pr-info">
+            <div class="pr-name">Elara Members Club — London</div>
+            <div class="pr-type">Hospitality · 1,800 m²</div>
+          </div>
+          <div class="pr-status design">Design Dev.</div>
+        </div>
+        <div class="project-row">
+          <div class="pr-swatch pr-s3"></div>
+          <div class="pr-info">
+            <div class="pr-name">Residence Khoury — Beirut</div>
+            <div class="pr-type">Residential · 680 m²</div>
+          </div>
+          <div class="pr-status build">On Site</div>
+        </div>
+        <div class="pv-quote">
+          <div class="pv-quote-text">"Good architecture tells you who you could be — not just where you are."</div>
+          <div class="pv-quote-attr">— Elena Marchetti, Principal Architect</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section" style="padding: 80px 5%;">
+  <div class="stats-row reveal">
+    <div class="stat-cell">
+      <div class="stat-num">140+</div>
+      <div class="stat-label">Completed Projects</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">26</div>
+      <div class="stat-label">Countries</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">11</div>
+      <div class="stat-label">International Awards</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">15yr</div>
+      <div class="stat-label">Studio Experience</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section" style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--obsidian-2);">
+  <div class="reveal" style="text-align: center;">
+    <div class="section-overline" style="justify-content: center;">
+      <div class="section-overline-rule"></div>
+      <div class="section-overline-text">Client Words</div>
+      <div class="section-overline-rule"></div>
+    </div>
+    <h2 class="section-headline">Built for those who<br><em>know the difference.</em></h2>
+  </div>
+
+  <div class="testimonials-grid reveal">
+    <div class="testimonial">
+      <span class="t-mark">"</span>
+      <p class="t-quote">Forma didn't design a house. They designed a way of living we didn't know we were capable of. Three years on, every room still surprises us.</p>
+      <div class="t-author">
+        <div class="t-avatar ta1">LM</div>
+        <div>
+          <div class="t-name">Laurent & Marie Dubois</div>
+          <div class="t-role">Private Residence, Provence</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <span class="t-mark">"</span>
+      <p class="t-quote">The Elara project demanded a space that could hold conversation, silence, and celebration simultaneously. Forma understood this from the first meeting.</p>
+      <div class="t-author">
+        <div class="t-avatar ta2">CR</div>
+        <div>
+          <div class="t-name">Camille Rousseau</div>
+          <div class="t-role">Founder, Elara Members Club</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <span class="t-mark">"</span>
+      <p class="t-quote">Every other studio brought us renderings. Forma brought us a philosophy. That's a rare and entirely different thing to work with.</p>
+      <div class="t-author">
+        <div class="t-avatar ta3">TK</div>
+        <div>
+          <div class="t-name">Thomas Khoury</div>
+          <div class="t-role">Private Residence, Beirut</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="reveal" style="text-align: center;">
+    <div class="section-overline" style="justify-content: center;">
+      <div class="section-overline-rule"></div>
+      <div class="section-overline-text">Engagement</div>
+      <div class="section-overline-rule"></div>
+    </div>
+    <h2 class="section-headline">Three ways<br>to work with <em>Forma.</em></h2>
+    <p class="section-sub" style="margin: 0 auto;">Every engagement is tailored. These structures are starting points for a conversation.</p>
+  </div>
+
+  <div class="pricing-grid reveal">
+    <div class="pricing-card">
+      <div class="plan-tier">Advisory</div>
+      <div class="plan-price">$8K</div>
+      <div class="plan-period">One-time engagement</div>
+      <ul class="plan-features">
+        <li class="plan-feature active">3-hour design consultation</li>
+        <li class="plan-feature active">Spatial brief document</li>
+        <li class="plan-feature active">Material direction report</li>
+        <li class="plan-feature inactive">Full concept development</li>
+        <li class="plan-feature inactive">Technical drawings</li>
+        <li class="plan-feature inactive">On-site management</li>
+      </ul>
+      <button class="btn-plan">Request Advisory</button>
+    </div>
+
+    <div class="pricing-card featured">
+      <div class="pricing-badge">Most Engaged</div>
+      <div class="plan-tier">Full Design</div>
+      <div class="plan-price">From $60K</div>
+      <div class="plan-period">Complete design service</div>
+      <ul class="plan-features">
+        <li class="plan-feature active">Unlimited design iterations</li>
+        <li class="plan-feature active">Full concept development</li>
+        <li class="plan-feature active">Technical construction set</li>
+        <li class="plan-feature active">Material & furniture specification</li>
+        <li class="plan-feature active">Contractor coordination</li>
+        <li class="plan-feature inactive">On-site representation</li>
+      </ul>
+      <button class="btn-plan featured">Begin Full Design</button>
+    </div>
+
+    <div class="pricing-card">
+      <div class="plan-tier">Total Delivery</div>
+      <div class="plan-price">Custom</div>
+      <div class="plan-period">Design through handover</div>
+      <ul class="plan-features">
+        <li class="plan-feature active">Everything in Full Design</li>
+        <li class="plan-feature active">Owner's representation</li>
+        <li class="plan-feature active">On-site weekly attendance</li>
+        <li class="plan-feature active">Bespoke furniture design</li>
+        <li class="plan-feature active">Full project management</li>
+        <li class="plan-feature active">Post-handover warranty period</li>
+      </ul>
+      <button class="btn-plan">Discuss Total Delivery</button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-ornament cta-ornament-tl"></div>
+  <div class="cta-ornament cta-ornament-tr"></div>
+  <div class="cta-ornament cta-ornament-bl"></div>
+  <div class="cta-ornament cta-ornament-br"></div>
+
+  <div class="reveal">
+    <div class="section-overline" style="justify-content: center;">
+      <div class="section-overline-rule"></div>
+      <div class="section-overline-text">Enquire</div>
+      <div class="section-overline-rule"></div>
+    </div>
+    <h2 class="section-headline">Every great space<br>begins with a <em>conversation.</em></h2>
+    <p class="section-sub">Forma accepts a limited number of new commissions each year. If you have a project in mind, we would be glad to hear about it.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-hero-primary">
+        Submit an Enquiry
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#" class="btn-hero-outline">View Portfolio</a>
+    </div>
+    <p class="cta-fine">All enquiries reviewed within 48 hours · Strictly confidential</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Forma<span>.</span></div>
+  <ul class="footer-links">
+    <li><a href="#">Privacy</a></li>
+    <li><a href="#">Terms</a></li>
+    <li><a href="#">Press</a></li>
+    <li><a href="#">Careers</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 Forma Studio Ltd. All rights reserved.</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Cursor grow on interactive elements
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '6px';
+      cursor.style.height = '6px';
+      ring.style.width = '52px';
+      ring.style.height = '52px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '10px';
+      cursor.style.height = '10px';
+      ring.style.width = '36px';
+      ring.style.height = '36px';
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav shadow on scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.borderBottomColor = window.scrollY > 60
+      ? 'rgba(232,224,212,0.12)'
+      : 'rgba(232,224,212,0.08)';
+  });
+
+  // Step active state
+  const steps = document.querySelectorAll('.step');
+  steps.forEach(step => {
+    step.addEventListener('mouseenter', () => {
+      steps.forEach(s => s.classList.remove('active'));
+      step.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
